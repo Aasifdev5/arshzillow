@@ -23,12 +23,16 @@ class RealtorListingController extends Controller
         // dd($request->all());
         $filters = [
             'deleted' => $request->boolean('deleted'),
-            ...$request->only(['by','order'])
+            ...$request->only(['by', 'order'])
         ];
-        return inertia('Realtor/Index', ['filters'=>$filters,'listings' => Auth::user()
-        ->listings()
-
-        ->filter($filters)->paginate(5)->withQueryString()
+        return inertia('Realtor/Index', [
+            'filters' => $filters,
+            'listings' => Auth::user()
+                ->listings()
+                ->filter($filters)
+                ->withCount('images')
+                ->paginate(5)
+                ->withQueryString()
         ]);
     }
 
@@ -74,7 +78,7 @@ class RealtorListingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-      public function edit(Listing $listing)
+    public function edit(Listing $listing)
     {
         return inertia('Realtor/Edit', [
             'listing' => $listing
@@ -110,7 +114,8 @@ class RealtorListingController extends Controller
         $listing->delete();
         return redirect()->back()->with('success', 'Listing was deleted!');
     }
-    public function restore(Listing $listing){
+    public function restore(Listing $listing)
+    {
         $listing->restore();
         return redirect()->back()->with('success', 'Listing was restored!');
     }

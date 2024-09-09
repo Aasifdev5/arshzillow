@@ -5,7 +5,7 @@ import { ZiggyVue } from 'ziggy-js';
 import { Ziggy } from './ziggy'; // Import the Ziggy configuration
 import { InertiaProgress } from '@inertiajs/progress';
 import '../css/app.css';
-import { route } from 'ziggy-js'; // Import route function from ziggy-js
+
 
 InertiaProgress.init({
     delay: 0,
