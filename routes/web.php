@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/show', [IndexController::class, 'show'])->name('show')->middleware('auth');
 
-Route::resource('listing', ListingController::class)->only('create', 'store', 'edit', 'update', 'destroy')->middleware('auth');
 
 Route::resource('listing', ListingController::class)->except('create', 'store', 'edit', 'update', 'destroy');
 
@@ -29,5 +28,6 @@ Route::post('store', [UserAccountController::class, 'store'])->name('user-accoun
 
 
 Route::prefix('realtor')->name('realtor.')->middleware('auth')->group(function () {
-    Route::resource('listing', RealtorListingController::class);
+    Route::name('listing.restore')->put('listing/{listing}/restore',[RealtorListingController::class,'restore'])->withTrashed();
+    Route::resource('listing', RealtorListingController::class)->only('index','create', 'store', 'edit', 'update', 'destroy')->withTrashed();
 });
