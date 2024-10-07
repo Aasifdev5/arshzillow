@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        dd(Auth::check());
+        // dd(Auth::check());
         return inertia('Index/Index',[
             'message'=>'Hello from laravel'
         ]);

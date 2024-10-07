@@ -6,7 +6,7 @@
             <Link href="/listing">Listings</Link>
           </div>
           <div class="flex items-center justify-center w-full sm:w-auto text-indigo-600 dark:text-indigo-300 font-bold text-center">
-            <Link href="/listing">Larazillow</Link>
+            <Link href="/listing">Arsh Builder</Link>
           </div>
           <div class="flex items-center gap-4">
             <div v-if="user" class="flex flex-col sm:flex-row items-center">
