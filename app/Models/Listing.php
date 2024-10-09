@@ -21,10 +21,14 @@ class Listing extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function images(){
+    public function images()
+    {
         return $this->hasMany(ListingImage::class);
     }
-
+    public function offers()
+    {
+        return $this->hasMany(Offer::class, 'listing_id');
+    }
     public function scopeMostRecent(Builder $query): Builder
     {
         return $query->orderByDesc('created_at');
@@ -61,8 +65,8 @@ class Listing extends Model
             )->when(
                 $filters['by'] ?? false,
                 fn($query, $value) =>
-                in_array($value, $this->sortable)?$query:
-                $query->orderBy($value, $filters['order'] ?? 'desc')
+                in_array($value, $this->sortable) ? $query :
+                    $query->orderBy($value, $filters['order'] ?? 'desc')
             );
     }
 }
