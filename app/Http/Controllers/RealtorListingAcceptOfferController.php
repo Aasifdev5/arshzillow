@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Offer;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RealtorListingAcceptOfferController extends Controller
 {
