@@ -55,7 +55,9 @@ class ListingController extends Controller
         return inertia('Listing/Index', [
             'filters' => $filters,
             'listings' => Listing::mostRecent()
-                ->filter($filters)->paginate(10)
+                ->filter($filters)
+                ->withoutSold()
+                ->paginate(10)
                 ->withQueryString()
 
         ]);
@@ -71,20 +73,25 @@ class ListingController extends Controller
      */
     public function show(Listing $listing)
     {
+        // Ensure the user is authorized to view the listing
+        $this->authorize('view', $listing);
 
-        // if (Auth::user()->cannot('view', $listing)) {
-        //     abort('403');
-        // }
-        // $this->authorize('view', $listing);
+        // Load related images
         $listing->load(['images']);
+
+        // Check if an offer has been made by the authenticated user
+        $offer = Auth::check() ? $listing->offers()->byMe()->first() : null;
+
+        // Return the data to the Inertia component
         return inertia('Listing/Show', [
-            'listing' => $listing
+            'listing' => $listing,
+            'offerMade' => $offer
         ]);
     }
+
 
 
     /**
      * Show the form for editing the specified resource.
      */
-
 }

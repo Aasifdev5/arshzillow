@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingOfferController;
+use App\Http\Controllers\RealtorListingAcceptOfferController;
 use App\Http\Controllers\RealtorListingController;
 use App\Http\Controllers\RealtorListingImageController;
 use App\Http\Controllers\UserAccountController;
@@ -32,7 +33,9 @@ Route::post('store', [UserAccountController::class, 'store'])->name('user-accoun
 
 Route::prefix('realtor')->name('realtor.')->middleware('auth')->group(function () {
     Route::name('listing.restore')->put('listing/{listing}/restore',[RealtorListingController::class,'restore'])->withTrashed();
-    Route::resource('listing', RealtorListingController::class)->only('index','create', 'store', 'edit', 'update', 'destroy')->withTrashed();
+    Route::resource('listing', RealtorListingController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy')->withTrashed();
     Route::resource('listing.image', RealtorListingImageController::class);
-
+    Route::get('listing/{listing}/show', [RealtorListingController::class, 'show'])->name('listing.show');
+    Route::name('offer.accept')->put('offer/{offer}/accept',RealtorListingAcceptOfferController::class);
 });
+

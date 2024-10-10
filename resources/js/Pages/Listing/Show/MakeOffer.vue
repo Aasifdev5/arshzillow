@@ -27,23 +27,34 @@
 import Box from "@/Components/UI/Box.vue";
 import Price from "@/Components/Price.vue";
 import { useForm } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, watch } from "vue"; // Add `watch` to the import
 import { route } from "ziggy-js";
+import {debounce} from 'lodash-es';
 const props = defineProps({
-    listingId:Number,
-    price:Number,
-})
-const form = useForm({
-    amount:props.price
-})
-const makeOffer = ()=>form.post(route('listing.offer.store',{listing:props.listingId}),{
-    preserveScroll:true,
-    preserveState:true
+    listingId: Number,
+    price: Number,
 });
-const difference  = computed (()=>form.amount - props.price)
-const min = computed(() => Math.round(props.price / 2))
-const max = computed(() => Math.round(props.price * 2))
 
-const emit = defineEmits(['offerUpdated'])
-watch(()=>form.amount,()=>emit('offerUpdated'))
+
+const form = useForm({
+    amount: props.price,
+});
+
+const makeOffer = () => {
+    form.post(route('listing.offer.store', { listing: props.listingId }), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+};
+
+const difference = computed(() => form.amount - props.price);
+const min = computed(() => Math.round(props.price / 2));
+const max = computed(() => Math.round(props.price * 2));
+const emit = defineEmits(['offerUpdated']); // Moved emit to the correct place
+
+watch(
+    () => form.amount,
+    debounce((value) => emit('offerUpdated', value),200)
+);
+
 </script>

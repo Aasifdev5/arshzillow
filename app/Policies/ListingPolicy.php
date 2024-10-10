@@ -31,9 +31,13 @@ class ListingPolicy
      * Determine whether the user can view the model.
      */
     public function view(?User $user, Listing $listing): bool
-    {
-        return false;
+{
+    if ($listing->user_id == $user->id) {
+        return true;
     }
+    return $listing->sold_at === null; // Ensure comparison not assignment
+}
+
 
     /**
      * Determine whether the user can create models.
@@ -48,7 +52,7 @@ class ListingPolicy
      */
     public function update(?User $user, Listing $listing): bool
     {
-        return $user->id = $listing->user_id;
+        return $listing->sold_at == null && ($user->id = $listing->user_id);
     }
 
     /**
